@@ -1,0 +1,79 @@
+#footer {
+    padding: 160px 70px 160px;
+    background-color: $main-font-color;
+    @include flexbox;
+    @include align-items(center);
+
+    .footer-row {
+        width: 100%;
+        @include flexbox;
+        @include justify-content(space-between);
+        @include flex-direction(row);
+        
+        @media screen and (max-width: $tablets) {
+            @include flex-direction(column);
+        }
+    }
+
+    .footer-col {
+        color: $white;
+        @include flexbox;
+        @include flex-direction(column);
+
+        div {
+            margin-bottom: 18px;
+        }
+
+        a {
+            margin-bottom: 18px;
+            text-decoration: none;
+            color: $white;
+        }
+
+        .footer-title {
+            font: normal 700 18px / 25px $main-font-name;
+            margin-bottom: 16px;
+        }
+
+        #links {
+            @include flexbox;
+            @include flex-direction(row);
+            height: 20px;
+
+            .link {
+                margin-right: 18px;
+                fill: $white;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+
+        @media screen and (max-width: $tablets) {
+            margin-bottom: 20px;
+        }
+    }
+
+    @media screen and (max-width: $tablets-big) {
+        padding: 100px 40px;
+    }
+
+    @media screen and (max-width: $phones-big) {
+        padding: 70px 20px;
+    }
+}
+
+#sub-footer {
+    width: 100%;
+    background-color: $dark-gray;
+    align-items: center;
+    display: flex;
+
+    div {
+        padding: 31px 0 31px 60px;
+        color: $light-gray2;
+        font: normal 700 14px / 18px;
+    }
+}

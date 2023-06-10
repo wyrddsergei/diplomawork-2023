@@ -1,0 +1,61 @@
+$footer-image-height: 60vh;
+
+.cover-image {
+    position: relative;
+
+    img {
+        width: 100%;
+        height: $footer-image-height;
+        object-fit: cover;
+    }
+
+    &-text {
+        &-title {
+            @include center-object-in-container-horizontally();
+            @include flex-center-vertically-start();
+            
+            &.center-text {
+                text-align: center;
+                @include align-items(center);
+            }
+
+            .cover-title-main {
+                font: normal 700 36px / 46px $main-font-name;
+                color: $white;
+                width: 50%;
+            }
+
+            .cover-subtitle {
+                font: normal 400 12px / 20px $main-font-name;
+                color: $light-gray2;
+                margin-top: 13px;
+            }
+
+            &#header-image-text {
+                width: 90%;
+                height: $footer-image-height;
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 90%;
+                transform: translate(-50%, 0); 
+            }
+        }
+    }
+
+    .non-animated-image {
+        width: 100%;
+        height: $footer-image-height;
+        @include flex-center-vertically-start();
+
+        &#footer-image {
+            background: url('https://files.techmahindra.com/static/img/home-tech-bets-scroll-banner-ai.jpg') no-repeat;
+            background-size: cover;
+        }
+
+        &#article-page-image {
+            background: url('../img/left_image.jpg') no-repeat;
+            background-size: cover;
+        }
+    }
+}

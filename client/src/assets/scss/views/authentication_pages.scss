@@ -1,0 +1,168 @@
+#login-reg-container {
+    @include flexbox; 
+    background-color: $white;
+}
+
+.col-50 {
+    width: 50%;
+}
+
+.auth-site-name-small {
+    font: 900 50px $logo-font;
+    letter-spacing: 0.1em;
+    color: $black;
+}
+
+.logo-bg {
+    .auth-site-name {
+        font: 900 5vw $logo-font;
+        letter-spacing: 0.1em;
+        color: $white;
+    }
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    position: relative;
+    background: url('https://images.pexels.com/photos/8721318/pexels-photo-8721318.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat; 
+    background-size: cover;
+    height: 100vh;
+}
+
+.action-form {
+    @include flexbox;
+    @include flex-direction(column);
+    @include align-self(center);
+    padding: 0 140px;
+
+    form {
+        @include flexbox; 
+        @include flex-direction(column);
+    }
+}
+
+form {
+    width: 100%;
+
+    input {
+        padding-left: 10px;
+        height: 48px;
+        margin-bottom: 24px;
+        background: $white;
+        border: 1px solid $light-gray2;
+        @include border-radius(5px);
+        font: normal 400 14px / 20px $main-font-name;
+
+        &:focus {
+            outline-color: $gray2;
+        }
+    }
+
+    label {
+        margin-bottom: 10px;
+    }
+
+    button {
+        font: normal 700 16px / 20px $main-font-name;
+        border: none;
+        height: 48px;
+        margin-bottom: 20px;
+        background: $dark-peach;
+        @include border-radius(5px);
+        color: $white;
+
+        &:hover {
+            cursor: pointer;
+            background: $dark-peach2;           
+        }
+    }
+}
+
+#add-article {
+    &:hover {
+        cursor: pointer;
+        background: $dark-peach2
+    }
+}
+
+#with-google {
+    font: normal 700 16px / 20px $main-font-name;
+    color: $white;
+    text-decoration: none;
+    background: $dark-gray;
+    margin-bottom: 20px;
+    padding: 14px 0;
+    @include border-radius(5px);
+    text-align: center;
+
+    &:hover {
+        background: $dark-gray2;
+    }
+}
+
+#site-name {
+    width: 131px;
+    height: 35px;
+    fill: $main-font-color;
+}
+
+#action-name {
+    font: normal 700 36px / 46px $main-font-name;
+    color: $main-font-color;
+    margin: 80px 0 30px;
+}
+
+#link-to-action {
+    font: 400 16px / 24px;
+    margin-top: 10px;
+
+    div {
+        display: inline;
+        margin-right: 10px;
+    }
+}
+
+.psw-action {
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(space-between);
+    margin-bottom: 24px;
+
+    * {
+        font: 400 16px / 24px;
+    }
+
+    label {
+        @include flexbox;
+        @include align-items(center);
+    }
+
+    #remember-me {
+        margin-right: 18px;
+    }
+}
+
+.col-s-100 {
+    @media (max-width: $desktop) {
+        width: 100%;
+    }
+
+    @media (max-width: $tablets-big) {
+        padding: 0 60px;
+    }
+
+    @media (max-width: $tablets) {
+        padding: 0 40px;
+    }
+
+    @media (max-width: $phones-big) {
+        padding: 0 20px;
+    }
+}
+
+.col-s-0 {
+    @media (max-width: $desktop) {
+        width: 0%;
+    }  
+}

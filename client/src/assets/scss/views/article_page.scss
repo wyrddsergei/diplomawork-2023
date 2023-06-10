@@ -1,0 +1,220 @@
+.article-content {
+    width: 70%;
+    background-color: $white;
+    @include center-object-in-container-horizontally;
+    padding: 140px 10px 50px 10px;
+
+    @media screen and (max-width: $tablets) {
+        padding: 70px 0;
+        width: 90%;
+    }
+
+    .article-text-wrapper {
+        @include box-shadow(0, 1px, 0, $light-gray2);
+    }
+
+    .article-text {
+        font: 400 14px / 25px $main-font-name;
+        color: $gray;
+        margin-bottom: 55px;
+
+        .article-quote {
+        padding: 30px 0;
+        font: 700 36px / 46px $main-font-name;
+        color: $dark-peach;
+        }
+    }
+
+    .article-date {
+        padding: 0 0 42px 0;
+        font: 700 12px / 25px $main-font-name;
+        color: $gray;
+    }
+
+    .article-author {
+        @include flexbox;
+        @include flex-direction(row);
+        @include justify-content(space-between);
+        @include align-items(center);
+        margin-top: 50px;
+
+        @media screen and (max-width: $tablets) {
+            @include flex-direction(column);
+            @include align-items(flex-start);
+        }
+
+        &-wrapper {
+            @include flexbox;
+            @include align-items(center);
+
+            img {
+                margin-right: 17px;
+                height: 55px;
+                width: 55px;
+                object-fit: cover;
+                @include border-radius(50%);
+            }
+
+            .article-author-info {
+                div {
+                    font: 700 12px / 20px $main-font-name;
+                    color: $gray;
+                }
+
+                .author-occupation {
+                    color: $light-gray;
+                }
+            }
+        }
+
+        #author-links {
+            display: flex;
+            flex-direction: row;
+
+            .a-link {
+                width: 20px;
+                height: 20px;
+                margin: 0 0 0 10px;
+                fill: $gray;
+
+                @media screen and (max-width: $tablets) {
+                    margin: 10px 10px 0 0;
+                }
+            }
+        }
+    }
+}
+  
+.related-posts {
+    padding: 30px 0;
+    background: #f2f3f4;
+
+    .related-post-preview {
+    @include box-sizing(border-box);
+    position: relative;
+    min-height: 0;
+    min-width: 0;
+    }
+
+    .related-posts-title {
+    font: 700 18px / 25px $main-font-name;
+    color: $gray;
+    margin-bottom: 50px;
+    }
+
+    &-wrapper {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    &-grid {
+    min-height: 0;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(min-content, max-content);
+    justify-content: space-between;
+    grid-gap: 10px;
+
+    @media screen and (max-width: $full-hd) {
+        justify-content: space-evenly;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media screen and (max-width: $tablets-big) {
+        grid-template-columns: 1fr;
+        justify-content: center;
+    }
+
+    .related-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 3%;
+    }
+
+    .related-text-container {
+        min-height: 0;
+        min-width: 0;
+        padding: 0 40px 27px 40px;
+        position: absolute;
+        bottom: 0;
+
+        @media screen and (max-width: $phones) {
+        padding: 0 10px 17px 10px;
+        }
+
+        .related-text {
+        text-decoration: none;
+        font: 400 12px / 15px $main-font-name;
+        color: $light-gray2;
+        margin-bottom: 15px;
+        }
+
+        .related-title {
+        font: 700 18px / 25px $main-font-name;
+        color: $white;
+        }
+    }
+
+    .slick-dots {
+        bottom: 3%;
+        left: 50%;
+        @include transform(translate(-50%, -3%));
+    }
+    }
+}
+
+.comment-section {
+    padding: 30px;
+    width: 80%;
+    background-color: $white;
+    margin: auto;
+
+    h2 {
+        margin-top: 50px;
+        margin-bottom: 15px;
+    }
+
+    .comment {
+        display: flex;
+        margin-bottom: 20px;
+        flex-direction: column;
+    }
+
+    .comment-non-user {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: black solid 2px;
+    }
+
+    .comment-user-info {
+        display: flex;
+        flex-direction: row;
+
+        .comment-avatar {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ccc;
+            object-fit: cover;
+        }
+
+        .comment-name-time {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 10px;
+
+            .comment-name {
+                font-weight: bold;
+            }
+        }
+    }
+
+    .comment-text {
+        margin-top: 5px;
+    }
+}

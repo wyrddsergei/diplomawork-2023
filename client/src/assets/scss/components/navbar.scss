@@ -1,0 +1,102 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    background: $white;
+    top: 0;
+    position: fixed;
+    z-index: 100;
+    @include box-shadow(0, 1px, 0, $light-gray2);
+
+    a {
+        text-decoration: none;
+        color: $black; 
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    div {
+        font-weight: 700;
+        margin-right: 70px;
+
+        @media screen and (max-width: $phones-big) {
+            margin-right: 20px;
+        }
+    }
+
+    .navbar-left {
+        margin-left: 70px;
+
+        a {
+            font: 900 23px $logo-font;
+            letter-spacing: 0.1em;
+            color: $dark-gray2;
+            margin-right: 30px;
+        }
+
+        #search-area-nav {
+            background: url('https://cdn-icons-png.flaticon.com/512/49/49116.png') no-repeat left center;
+            background-position-x: 13px;
+            background-size: 20px 20px;
+            padding-left: 43px;
+            width: 280px;
+            height: 35px;
+            border: 1px solid $light-gray2;
+            @include border-radius(3px);
+
+            &:focus {
+                outline-color: $gray2;
+            }
+        }
+
+        @media screen and (max-width: $phones-big) {
+            margin-left: 20px;
+        }
+    } 
+
+    .tab {
+        margin-left: 30px;
+        font-family: $main-font-name2;
+        color: $dark-gray2;
+    }
+
+    .current-tab {
+        padding-bottom: 6px;
+        border-bottom: 2px solid $dark-peach;
+    }
+}
+
+.navbar-categories {
+    z-index: 99;
+    width: 100%;
+    height: 40px;
+    top: 80px;
+    background: $white;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: $dark-peach;
+
+    .navbar-cat-item {
+        margin-right: 20px;
+    
+        a {
+            color: $white;
+            font-family: $main-font-name2;
+            text-decoration: none;
+            
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+      }
+  }
+  

@@ -1,0 +1,12 @@
+@import './_variables.scss';
+@import './mixins/_mixins.scss';
+@import './global.scss';
+
+@import './components/navbar.scss';
+@import './components/articlepostpreview.scss';
+@import './components/footer.scss';
+@import './components/footerimage.scss';
+
+@import './views/authentication_pages.scss';
+@import './views/article_page.scss';
+@import './views/article_list.scss';
