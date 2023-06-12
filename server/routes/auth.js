@@ -91,8 +91,6 @@ router.get('/profile', asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Authorized', user: data });
 }));
 
-
-
 router.post('/logout', (req, res) => {
   res.cookie('jwt', '', { maxAge: 0 });
 
