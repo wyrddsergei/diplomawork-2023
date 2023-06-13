@@ -42,7 +42,6 @@
               <div class="related-text related-title">
                 Richird Norton photorealistic rendering as real photos
               </div>
-
               <div class="related-text">
                 Progressively incentivize cooperative systems through technically sound
                 functionalities. Credibly productivate seamless data with flexible schemas.
@@ -54,11 +53,16 @@
     </div>
 
     <div class="comment-section">
-      <h2>Comments ({{ comments.length }})</h2>
+      <CommentSubmit
+        v-if="auth && article._id"
+        :post-id="article._id"
+        :author-id="authenticatedUser._id"
+      />
+      <!-- <h2>Comments ({{ comments.length }})</h2>
       <div class="comment-non-user" v-if="!auth">
         Want to engage in the conversation? <a href="/signin">Sign in or register!</a>
       </div>
-      <div class="comment" v-for="comment in comments" :key="comment">
+      <div class="comment" v-for="comment in comments.slice().reverse()" :key="comment">
         <div class="comment-user-info" v-if="comment">
           <img
             class="comment-avatar"
@@ -77,12 +81,13 @@
             {{ comment.content }}
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
+import CommentSubmit from '../components/CommentSubmit.vue'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
@@ -94,6 +99,7 @@ export default {
     const route = useRoute()
     const store = useStore()
     const auth = computed(() => store.state.authenticated)
+    const authenticatedUser = computed(() => store.state.user)
 
     const formatTimestamp = (timestamp) => {
       const currentDate = new Date()
@@ -128,50 +134,19 @@ export default {
         })
     }
 
-    const fetchComments = () => {
-      fetch(`http://localhost:4000/api/comments/${route.params.id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          comments.value = data
-          fetchUserInformation()
-        })
-        .catch((error) => {
-          console.error('Failed to fetch comments:', error)
-        })
-    }
-
-    const fetchUserInformation = () => {
-      const userIds = [...new Set(comments.value.map((comment) => comment.authorId))]
-
-      userIds.forEach((userId) => {
-        fetch(`http://localhost:4000/api/users/${userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            const user = data
-
-            comments.value.forEach((comment) => {
-              if (comment.authorId === userId) {
-                comment.user = user
-              }
-            })
-          })
-          .catch((error) => {
-            console.error('Failed to fetch user information:', error)
-          })
-      })
-    }
-
     onMounted(() => {
-      fetchComments()
       fetchPost()
     })
-
     return {
       article,
       comments,
       auth,
-      formatTimestamp
+      formatTimestamp,
+      authenticatedUser
     }
+  },
+  components: {
+    CommentSubmit
   }
 }
 </script>

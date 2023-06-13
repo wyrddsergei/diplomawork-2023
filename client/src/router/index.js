@@ -97,24 +97,27 @@ router.beforeEach(async (to, from, next) => {
         'Content-Type': 'application/json'
       },
       credentials: 'include'
-    })
+    });
 
-    const responseData = await response.json()
+    const responseData = await response.json();
 
     if (response.status === 200 && responseData.message === 'Authorized') {
       // Update the authentication state in the store
-      await store.dispatch('setAuth', true)
-      next()
+      await store.dispatch('setAuth', true);
+
+      // Store the authenticated user information in the Vuex store
+      await store.dispatch('setUser', responseData.user);
+      next();
     } else {
       // Update the authentication state in the store
-      await store.dispatch('setAuth', false)
-      next() // Call next() to proceed with the navigation
+      await store.dispatch('setAuth', false);
+      next();
     }
   } catch (error) {
-    console.error(error)
-    next(error) // Pass the error to next() to indicate an error occurred
+    console.error(error);
+    next(error);
   }
-})
+});
 
 
 export default router
