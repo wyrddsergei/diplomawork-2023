@@ -23,13 +23,13 @@
           <!-- Add more tag options here -->
         </select>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="postpone-date">Postpone:</label>
         <input type="date" id="postpone-date" v-model="article.postponeDate" class="form-input" />
         <input type="time" id="postpone-time" v-model="article.postponeTime" class="form-input" />
-      </div>
+      </div> -->
       <button type="submit" class="btn-submit">Publish Article</button>
-      <button type="button" class="btn-postpone" @click="togglePostponeForm">Postpone</button>
+      <!-- <button type="button" class="btn-postpone" @click="togglePostponeForm">Postpone</button> -->
       <div v-if="showPostponeForm" class="postpone-form">
         <h3>Postpone Article</h3>
         <div class="form-group">
