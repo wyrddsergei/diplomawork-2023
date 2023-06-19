@@ -1,8 +1,6 @@
 <template>
   <header>
-    <NavBar
-      v-if="!['signin', 'signup', 'createarticle', 'editor', 'notfound'].includes($route.name)"
-    />
+    <NavBar v-if="!['signin', 'signup', 'createarticle', 'notfound'].includes($route.name)" />
   </header>
   <RouterView />
   <FooterComponent

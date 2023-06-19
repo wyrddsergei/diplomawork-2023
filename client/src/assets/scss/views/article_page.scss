@@ -23,6 +23,10 @@
         font: 700 36px / 46px $main-font-name;
         color: $dark-peach;
         }
+
+        img {
+            width: 100%;
+        }
     }
 
     .article-date {
@@ -139,16 +143,27 @@
         padding: 0 40px 27px 40px;
         position: absolute;
         bottom: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+          
 
         @media screen and (max-width: $phones) {
         padding: 0 10px 17px 10px;
         }
 
         .related-text {
-        text-decoration: none;
-        font: 400 12px / 15px $main-font-name;
-        color: $light-gray2;
-        margin-bottom: 15px;
+            width: 400px;
+            text-decoration: none;
+            font: 400 12px / 15px $main-font-name;
+            color: $light-gray2;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .related-title {

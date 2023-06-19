@@ -3,11 +3,17 @@ const Post = require('../models/Post');
 
 // Create
 router.post('/', async (req, res) => {
-    const newPost = new Post(req.body);
+    const newPost = new Post({
+      title: req.body.title,
+      contents: req.body.contents,
+      coverImage: req.body.coverImage,
+      createdBy: req.body.createdBy,
+      categories: req.body.categories
+    });
 
     try {
-        const savedPost = await newPost.save();
-        res.status(200).json(savedPost);
+      const savedPost = await newPost.save();
+      res.status(200).json(savedPost);
     } catch (err) {
         res.status(500).json(err);
     }
@@ -75,47 +81,53 @@ router.get('/:id', async (req, res) => {
 
 // Get All
 router.get('/', async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 8;
-    const username = req.query.user;
-    const catName = req.query.cat;
-  
-    try {
-      let posts;
-      let totalPosts;
-  
-      const query = {};
-  
-      if (username) {
-        query.username = username;
-      } else if (catName) {
-        query.categories = { $in: { name: catName } };
-      }
-  
-      // Count total number of matching posts
-      totalPosts = await Post.countDocuments(query);
-  
-      // Calculate the starting index of the current page
-      const startIndex = (page - 1) * limit;
-  
-      // Fetch posts based on pagination parameters and sort by createdAt in descending order
-      posts = await Post.find(query)
-        .sort({ createdAt: -1 })
-        .skip(startIndex)
-        .limit(limit)
-        .exec();
-  
-      const totalPages = Math.ceil(totalPosts / limit);
-  
-      res.status(200).json({
-        posts,
-        page,
-        totalPages,
-        totalPosts,
-      });
-    } catch (err) {
-      res.status(500).json(err);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 8;
+  const userId = req.query.user; // Change the variable name to userId
+  const catName = req.query.cat;
+  const search = req.query.search;
+
+  try {
+    let posts;
+    let totalPosts;
+
+    const query = {};
+
+    if (userId) {
+      query.createdBy = userId; // Change the field name to match your Post model
+    } else if (catName) {
+      query.categories = { $in: { name: catName } };
+    } else if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { categories: { $in: [search] } }
+      ];
     }
-  });
+
+    // Count total number of matching posts
+    totalPosts = await Post.countDocuments(query);
+
+    // Calculate the starting index of the current page
+    const startIndex = (page - 1) * limit;
+
+    // Fetch posts based on pagination parameters and sort by createdAt in descending order
+    posts = await Post.find(query)
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(limit)
+      .exec();
+
+    const totalPages = Math.ceil(totalPosts / limit);
+
+    res.status(200).json({
+      posts,
+      page,
+      totalPages,
+      totalPosts,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;

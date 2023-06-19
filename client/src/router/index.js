@@ -6,7 +6,6 @@ import SignUpView from '../views/SignUpView.vue'
 import ArticleView from '../views/ArticleView.vue'
 import AllArticlesView from '../views/AllArticlesView.vue'
 import AdminView from '../views/AdminView.vue'
-import CreateArticleView from '../views/CreateArticleView.vue'
 import EditorView from '../views/EditorView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 import store from '../store'
@@ -65,17 +64,32 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin',
-      component: AdminView
-    },
-    {
-      path: '/admin/createarticle',
-      name: 'createarticle',
-      component: CreateArticleView
+      component: AdminView,
+      beforeEnter: (to, from, next) => {
+        // Check if the user is authenticated
+        if (store.state.authenticated) {
+          // User is authenticated, allow access to the editor
+          next();
+        } else {
+          // User is not authenticated, redirect to the signin page
+          next({ name: 'signin' });
+        }
+      }
     },
     {
       path: '/editor',
       name: 'editor',
-      component: EditorView
+      component: EditorView,
+      beforeEnter: (to, from, next) => {
+        // Check if the user is authenticated
+        if (store.state.authenticated) {
+          // User is authenticated, allow access to the editor
+          next();
+        } else {
+          // User is not authenticated, redirect to the signin page
+          next({ name: 'signin' });
+        }
+      }
     },
     {
       path: '/404',

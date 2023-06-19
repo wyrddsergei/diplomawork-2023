@@ -30,6 +30,19 @@
         <span class="tag" v-for="(tag, index) in tags" :key="index">{{ tag }}</span>
       </div>
     </div>
+    <div class="cover-container">
+      <label for="cover" class="label">Cover Image:</label>
+      <input
+        type="file"
+        id="cover"
+        @change="handleCoverChange"
+        class="cover-input"
+        accept="image/*"
+      />
+      <div v-if="coverUrl" class="cover-preview">
+        <img :src="coverUrl" alt="Cover Preview" class="cover-image" />
+      </div>
+    </div>
     <div class="editor-content" ref="editorContent"></div>
     <div class="button-container">
       <button class="publish-button" @click="publish">Publish</button>
@@ -54,21 +67,29 @@ export default {
       title: '',
       availableCategories: [
         'Tech',
-        'Programming',
-        'Web Development',
-        'Artificial Intelligence',
-        'Cybersecurity'
+        'Science',
+        'Life',
+        'Entertainment',
+        'Guides',
+        'News',
+        'Travel',
+        'Deals'
       ],
       selectedCategories: [],
       selectedTags: [],
       categoryTags: {
         Tech: ['Tech'],
-        Programming: ['Programming'],
-        'Web Development': ['Web Development'],
-        'Artificial Intelligence': ['Artificial Intelligence'],
-        Cybersecurity: ['Cybersecurity']
+        Science: ['Science'],
+        Life: ['Life'],
+        Entertainment: ['Entertainment'],
+        Guides: ['Guides'],
+        News: ['News'],
+        Travel: ['Travel'],
+        Deals: ['Deals']
       },
-      tags: []
+      tags: [],
+      coverFile: null,
+      coverUrl: null
     }
   },
   computed: {
@@ -87,14 +108,70 @@ export default {
         this.content = this.editor.root.innerHTML
       })
     },
-    publish() {
-      // Add publish logic here
-      console.log('Publishing article...')
-      console.log('Title:', this.title)
-      console.log('Categories:', this.selectedCategories)
-      console.log('Tags:', this.tags)
-      console.log('Content:', this.content)
+    handleCoverChange(event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.coverFile = file
+        this.coverUrl = URL.createObjectURL(file)
+      } else {
+        this.coverFile = null
+        this.coverUrl = null
+      }
     },
+    async publish() {
+      try {
+        const authenticatedUser = this.$store.state.user
+        const myAuthorId = authenticatedUser._id
+        const uploadData = new FormData()
+        const fileName = Date.now() + this.coverFile.name
+        const formData = new FormData()
+
+        formData.append('title', this.title)
+        formData.append('contents', this.content)
+        formData.append('createdBy', myAuthorId)
+        formData.append('categories', JSON.stringify(this.selectedCategories))
+
+        // Upload the cover image separately
+        if (this.coverFile) {
+          uploadData.append('name', fileName)
+          uploadData.append('file', this.coverFile)
+          formData.append('coverImage', fileName)
+
+          await fetch('http://localhost:4000/api/upload', {
+            method: 'POST',
+            body: uploadData
+          })
+        }
+
+        // Create the post
+        const response = await fetch('http://localhost:4000/api/posts', {
+          method: 'POST',
+          body: JSON.stringify({
+            title: this.title,
+            contents: this.content,
+            createdBy: myAuthorId,
+            coverImage: fileName,
+            categories: this.selectedCategories
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const responseData = await response.json()
+
+        // Get the created post ID from the response
+        const postId = responseData._id
+
+        // Set the created post ID to the component data property
+        this.createdPostId = postId
+
+        // Redirect the user to the created article page
+        this.$router.push(`/article/${postId}`)
+      } catch (error) {
+        console.error('Error publishing article:', error)
+      }
+    },
+
     cancel() {
       // Add cancel logic here
       console.log('Canceling article...')
@@ -113,6 +190,7 @@ export default {
   font-family: Arial, sans-serif;
   max-width: 600px; /* Set desired maximum width */
   margin: 0 auto; /* Center the container horizontally */
+  margin-top: 135px;
   background-color: #f8f8f8; /* Add a background color */
 }
 
@@ -235,5 +313,26 @@ export default {
 
 .cancel-button:hover {
   background-color: #c82333;
+}
+
+.cover-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cover-input {
+  margin-right: 10px;
+}
+
+.cover-preview {
+  max-width: 100%;
+}
+
+.cover-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-top: 5px;
 }
 </style>

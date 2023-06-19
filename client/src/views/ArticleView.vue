@@ -3,21 +3,20 @@
     <div class="article-content-container">
       <div class="article-content">
         <div class="article-text-wrapper">
-          <div class="article-text">
-            {{ article.contents }}
-          </div>
+          <div v-html="article.contents" class="article-text" />
           <div class="article-date">Posted {{ formatTimestamp(article.createdAt) }}</div>
         </div>
         <div class="article-author">
           <div class="article-author-wrapper">
             <img
+              v-if="authorInfo"
               class="author-profile-pic"
-              src="https://images.pexels.com/photos/5474028/pexels-photo-5474028.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              :src="'http://localhost:4000/uploads/' + authorInfo.profilePicture"
               alt="profile-pic"
             />
             <div class="article-author-info">
-              <div class="author-name">By {{ article.createdBy }}</div>
-              <div class="author-occupation">Senior Technology Correspondent</div>
+              <div class="author-name">By {{ authorInfo.username }}</div>
+              <div class="author-occupation">Article Author</div>
             </div>
           </div>
         </div>
@@ -27,66 +26,21 @@
     <div class="related-posts">
       <div class="related-posts-wrapper">
         <div class="related-posts-title">Related Posts</div>
-
-        <div class="related-posts-grid slider fade">
-          <a class="related-post-preview image" href="/article" v-for="i in 3" :key="i">
-            <img
-              class="related-image"
-              src="https://images.pexels.com/photos/2823936/pexels-photo-2823936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt=""
-            />
-
-            <div class="related-text-container">
-              <div class="related-text">01.01.2023</div>
-
-              <div class="related-text related-title">
-                Richird Norton photorealistic rendering as real photos
-              </div>
-              <div class="related-text">
-                Progressively incentivize cooperative systems through technically sound
-                functionalities. Credibly productivate seamless data with flexible schemas.
-              </div>
-            </div>
-          </a>
-        </div>
+        <ArticleRelatedPreview :posts="relatedPosts" />
       </div>
     </div>
 
-    <div class="comment-section">
-      <CommentSubmit
-        v-if="auth && article._id"
-        :post-id="article._id"
-        :author-id="authenticatedUser._id"
-      />
-      <!-- <h2>Comments ({{ comments.length }})</h2>
+    <div class="comment-section" v-if="article._id">
       <div class="comment-non-user" v-if="!auth">
         Want to engage in the conversation? <a href="/signin">Sign in or register!</a>
       </div>
-      <div class="comment" v-for="comment in comments.slice().reverse()" :key="comment">
-        <div class="comment-user-info" v-if="comment">
-          <img
-            class="comment-avatar"
-            :src="comment.user ? comment.user.profilePicture : ''"
-            :alt="comment.user ? comment.user.username : ''"
-          />
-
-          <div class="comment-name-time">
-            <div class="comment-name">{{ comment.user ? comment.user.username : '' }}</div>
-            <div class="comment-posted-on">{{ formatTimestamp(comment.createdAt) }}</div>
-          </div>
-        </div>
-
-        <div class="comment-content">
-          <div class="comment-text">
-            {{ comment.content }}
-          </div>
-        </div>
-      </div> -->
+      <CommentSubmit :postId="article._id" />
     </div>
   </div>
 </template>
 
 <script>
+import ArticleRelatedPreview from '../components/ArticleRelatedPreview.vue'
 import CommentSubmit from '../components/CommentSubmit.vue'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -95,11 +49,13 @@ import { useStore } from 'vuex'
 export default {
   setup() {
     const article = ref('')
+    const authorInfo = ref('')
     const comments = ref([])
     const route = useRoute()
     const store = useStore()
     const auth = computed(() => store.state.authenticated)
-    const authenticatedUser = computed(() => store.state.user)
+    const relatedPosts = ref([])
+    const loading = ref(false)
 
     const formatTimestamp = (timestamp) => {
       const currentDate = new Date()
@@ -126,27 +82,85 @@ export default {
       }
     }
 
-    const fetchPost = () => {
-      fetch(`http://localhost:4000/api/posts/${route.params.id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          article.value = data
-        })
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/api/posts/${route.params.id}`)
+        const data = await response.json()
+        article.value = data
+      } catch (error) {
+        console.error(error)
+      }
     }
 
-    onMounted(() => {
-      fetchPost()
+    const fetchRelatedPosts = async () => {
+      try {
+        loading.value = true
+
+        // Check if article.value.categories exists before using it
+        if (article.value && article.value.categories && article.value.categories.length > 0) {
+          const relatedPostsResponse = await fetch(
+            `http://localhost:4000/api/posts/?search=${article.value.categories[0]}&limit=3`
+          )
+          const relatedPostsData = await relatedPostsResponse.json()
+
+          if (relatedPostsData.length > 0) {
+            // Filter out the current page from the related posts
+            const filteredPosts = relatedPostsData.filter((post) => post._id !== article.value._id)
+            relatedPosts.value = filteredPosts
+          } else {
+            const allPostsResponse = await fetch('http://localhost:4000/api/posts/?limit=3')
+            const allPostsData = await allPostsResponse.json()
+
+            // Filter out the current page from all posts
+            const filteredPosts = allPostsData.posts.filter(
+              (post) => post._id !== article.value._id
+            )
+            relatedPosts.value = filteredPosts
+          }
+        } else {
+          const allPostsResponse = await fetch('http://localhost:4000/api/posts/?limit=3')
+          const allPostsData = await allPostsResponse.json()
+
+          // Filter out the current page from all posts
+          const filteredPosts = allPostsData.posts.filter((post) => post._id !== article.value._id)
+          relatedPosts.value = filteredPosts
+        }
+
+        loading.value = false
+      } catch (error) {
+        console.error(error)
+        loading.value = false
+      }
+    }
+
+    const fetchAuthorInfo = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/api/users/${article.value.createdBy}`)
+        const data = await response.json()
+        authorInfo.value = data
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    onMounted(async () => {
+      await fetchPost()
+      await fetchRelatedPosts()
+      await fetchAuthorInfo()
     })
+
     return {
       article,
+      authorInfo,
       comments,
       auth,
-      formatTimestamp,
-      authenticatedUser
+      relatedPosts,
+      formatTimestamp
     }
   },
   components: {
-    CommentSubmit
+    CommentSubmit,
+    ArticleRelatedPreview
   }
 }
 </script>

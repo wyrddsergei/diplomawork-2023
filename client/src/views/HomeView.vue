@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="blog-block">
+      <div class="greeting-message" v-if="auth">{{ message }}</div>
       <div class="blog-block-title">
         <div class="latest-title">Latest</div>
         <a href="/articles">View more</a>
@@ -56,6 +57,11 @@ export default {
 
     const auth = computed(() => store.state.authenticated)
 
+    if (auth.value) {
+      const authenticatedUser = computed(() => store.state.user)
+      message.value = `Welcome, ${authenticatedUser.value.username}!`
+    }
+
     return {
       articles,
       message,
@@ -65,3 +71,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.greeting-message {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+</style>

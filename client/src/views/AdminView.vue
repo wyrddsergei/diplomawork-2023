@@ -1,46 +1,35 @@
 <template>
   <div class="article-list-container">
-    <a href="#">Home</a>
+    <a href="/">Home</a>
     <h1 id="list-name">Article List</h1>
 
-    <div id="find-add-article">
-      <input id="search-area" type="textarea" placeholder="Search Article" />
-      <a id="add-article" href="#">Add New Article</a>
-    </div>
-
+    <a href="/editor" class="add-article-link">+ Add Article</a>
     <div class="table-container">
       <table id="article-list">
         <thead class="has-shadow">
           <tr>
-            <th class="article-checkbox"><input class="global-checkbox" type="checkbox" /></th>
             <th>IMAGE</th>
             <th>TITLE</th>
             <th>AUTHOR</th>
-            <th>LAST MODIFIED</th>
-            <th>STATUS</th>
+            <th>PUBLISHED</th>
             <th>ACTION</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="i in 20" :key="i">
-            <td class="article-checkbox"><input class="global-checkbox" type="checkbox" /></td>
-            <td class="blog-image"></td>
-            <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</td>
-            <td>John Smith</td>
-            <td>02/01/2023</td>
-            <td>Published</td>
+          <tr v-for="post in posts" :key="post._id">
+            <td class="blog-image">
+              <img :src="'http://localhost:4000/uploads/' + post.coverImage" alt="" />
+            </td>
+            <td>{{ post.title }}</td>
+            <td>{{ authenticatedUser.username }}</td>
+            <td>{{ formatDate(post.createdAt) }}</td>
             <td class="action-btns">
-              <a class="edit-btn" href="#">
-                <img
-                  src="https://cdn.icon-icons.com/icons2/2248/PNG/512/pencil_icon_135316.png"
-                  alt="edit"
-                />
-              </a>
-              <a class="delete-btn" href="#">
+              <div class="delete-btn" @click="deletePost(post._id)">
                 <img
                   src="https://static-00.iconduck.com/assets.00/trash-icon-462x512-njvey5nf.png"
-                  alt="edit"
-              /></a>
+                  alt="delete"
+                />
+              </div>
             </td>
           </tr>
         </tbody>
@@ -48,3 +37,81 @@
     </div>
   </div>
 </template>
+
+<script>
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
+import { formatDistanceToNow, parseISO } from 'date-fns'
+
+export default {
+  setup() {
+    const posts = ref([])
+    const store = useStore()
+    const authenticatedUser = computed(() => store.state.user)
+    const myId = authenticatedUser.value._id
+
+    const fetchPostsByUser = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/api/posts?user=${myId}`)
+        if (response.ok) {
+          const data = await response.json()
+          posts.value = data.posts
+        } else {
+          console.log('Error fetching posts:', response.statusText)
+        }
+      } catch (error) {
+        console.log('Error fetching posts:', error)
+      }
+    }
+
+    const formatDate = (date) => {
+      const postTime = parseISO(date)
+      return formatDistanceToNow(postTime, { addSuffix: true })
+    }
+
+    const deletePost = async (postId) => {
+      try {
+        const response = await fetch(`http://localhost:4000/api/posts/${postId}`, {
+          method: 'DELETE'
+        })
+        if (response.ok) {
+          // Remove the deleted post from the posts array
+          posts.value = posts.value.filter((post) => post._id !== postId)
+        } else {
+          console.log('Error deleting post:', response.statusText)
+        }
+      } catch (error) {
+        console.log('Error deleting post:', error)
+      }
+    }
+
+    onMounted(() => {
+      fetchPostsByUser()
+    })
+
+    return {
+      posts,
+      authenticatedUser,
+      formatDate,
+      deletePost
+    }
+  }
+}
+</script>
+
+<style scoped>
+.add-article-link {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  text-decoration: none;
+  background-color: #4caf50;
+  color: white;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #45a049;
+  }
+}
+</style>

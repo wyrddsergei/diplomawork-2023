@@ -3,8 +3,8 @@
     <div class="footer-row">
       <div class="footer-col">
         <div class="footer-title">Contacts us</div>
-        <a href="mailto:mike@runo.com">serhii@technosun.com</a>
-        <a href="tel:+944450904505">+380 509 497 536 </a>
+        <a href="mailto:serhii@technosun.com">serhii@technosun.com</a>
+        <a href="tel:+380509497536">+380509497536</a>
       </div>
 
       <div class="footer-col">

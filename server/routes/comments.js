@@ -26,6 +26,21 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/comment/:commentId', async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    res.json(comment);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch comment' });
+  }
+});
+
 // Update a comment
 router.put('/:commentId', async (req, res) => {
   try {

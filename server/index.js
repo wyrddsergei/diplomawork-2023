@@ -19,7 +19,7 @@ app.use(cors({
     origin: ['http://localhost:5173']
 }));
 app.use(express.json());
-app.use('/images', express.static(path.join(__dirname,'/images')))
+app.use('/uploads', express.static(path.join(__dirname,'uploads')))
 
 mongoose.set('strictQuery', false);
 
@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGO_URL, {
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'images');
+        cb(null, 'uploads');
     },
     filename: (req, file, cb) => {
         cb(null, req.body.name);

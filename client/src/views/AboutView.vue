@@ -1,50 +1,61 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum quod dolorem nemo illo
-      consequatur ex error cum tempore velit sapiente maiores, deleniti eligendi atque. Eum quos
-      tempore magnam culpa possimus dicta nam, quaerat, molestiae deserunt ipsum ipsam quod natus
-      vel magni consequatur iure nobis eligendi laboriosam dolores suscipit! Quae expedita ipsum
-      molestias a in, necessitatibus, commodi doloremque error incidunt eum ipsam dolore atque
-      distinctio laborum ipsa? Natus cumque libero molestiae error quod ex voluptatum quibusdam eos
-      blanditiis quia ab id, nobis distinctio. Fugit, sunt, quis, veritatis iusto autem ducimus
-      molestiae mollitia eligendi unde veniam accusantium? Fugiat vitae pariatur vel cum autem,
-      dignissimos doloribus laborum totam cumque ipsam veniam officiis ipsum neque itaque voluptate
-      ab vero quae illo dolores nemo illum ducimus maiores! Officiis animi blanditiis asperiores
-      minus dolorem temporibus, necessitatibus ullam voluptatem saepe aliquid qui voluptate?
-      Veritatis omnis sit modi quas ullam totam sed culpa repellat quasi quae? Dolorem harum libero
-      natus nobis a porro facere debitis voluptas quidem odio nesciunt dignissimos, sunt qui
-      obcaecati ad at ratione expedita repellat quos laboriosam corporis. Aperiam adipisci incidunt
-      nesciunt itaque, unde, explicabo aspernatur optio exercitationem nemo ipsam a vel ab amet
-      quasi dolores. Officia vero sed quos maiores voluptatibus quidem, totam, itaque et fugiat
-      omnis dolores eligendi quis dolore sunt fuga. Vel dolorem facere in quod illo reiciendis iure
-      voluptates error id nam velit cum obcaecati natus, commodi, itaque, veniam dicta voluptatum!
-      Aut possimus alias illo culpa error quia dolore recusandae placeat! Esse odit tenetur,
-      incidunt omnis impedit, est rem velit voluptatum temporibus voluptas obcaecati corporis sequi
-      aliquid quo nostrum ab. Cumque quaerat ducimus fugit error, aperiam, sunt et reprehenderit at
-      maiores, atque a modi natus quibusdam accusamus eaque repellat earum nostrum illum iure ipsa
-      voluptatum! Necessitatibus similique corrupti saepe ex unde error, ullam hic, fugit at eos
-      labore! Labore omnis illo animi est minus, pariatur at fugiat ipsam expedita sequi, eveniet,
-      reprehenderit corporis vero eligendi rerum tenetur aspernatur repellendus dignissimos amet.
-      Minima aliquam sapiente voluptas numquam. Doloribus explicabo modi, dolores accusamus tempore
-      qui sunt. Perferendis cupiditate, veniam voluptas autem magnam praesentium earum amet
-      veritatis. Consequuntur pariatur temporibus aliquid ad distinctio minus id quibusdam illo,
-      optio eum tenetur laudantium, incidunt sapiente eos numquam, rem perspiciatis quasi doloremque
-      modi. Consequatur enim dignissimos deserunt praesentium. Esse earum magni voluptatum rem
-      laborum nam dicta tempora! Quam, delectus assumenda soluta veniam, non harum quo consequatur,
-      possimus facilis eligendi veritatis. Dicta unde inventore iste aspernatur veniam omnis
-      dignissimos eius! Nesciunt, ducimus animi architecto nisi quae assumenda eum cumque! Modi
-      laborum ex magni, inventore quisquam saepe. Amet porro magnam tenetur similique sunt ipsam
-      delectus aliquam nesciunt possimus explicabo repudiandae nemo animi aut illum praesentium
-      dicta officia error, iure, nisi autem, quibusdam nobis cupiditate alias veniam. Quo iure
-      dolorum maxime fugit, quidem dolores saepe odio ducimus. Fugit, perspiciatis nobis magni, esse
-      atque fuga nihil aliquam vitae distinctio laudantium rem ducimus molestiae illum maiores ex
-      veniam vel commodi dignissimos perferendis possimus necessitatibus explicabo corporis. Nisi
-      omnis incidunt esse culpa hic aperiam repudiandae consequatur adipisci distinctio dolores fuga
-      dolor, a sit.
-    </p>
+  <div class="about-container">
+    <h1 class="about-title">About Technosun</h1>
+    <div class="about-content">
+      <p class="about-description">
+        Welcome to Tech Blog, your go-to source for the latest news, trends, and insights in the
+        world of technology. Our team of passionate tech enthusiasts is dedicated to providing you
+        with informative and engaging content on various topics, including software development,
+        artificial intelligence, cybersecurity, and more.
+      </p>
+      <p class="about-description">
+        Whether you are a tech professional, a curious learner, or simply someone who wants to stay
+        updated with the ever-evolving tech landscape, Tech Blog is here to cater to your interests.
+        Our articles are crafted to be accessible and engaging, presenting complex concepts in a
+        clear and understandable manner.
+      </p>
+      <p class="about-description">
+        We value the importance of community and interaction. Feel free to leave comments, share
+        your thoughts, and engage in discussions with fellow readers. We believe in the power of
+        knowledge-sharing and collaboration, and we encourage you to actively participate in our
+        tech community.
+      </p>
+      <p class="about-description">
+        Thank you for being a part of Tech Blog. We hope you enjoy your stay and find our content
+        valuable and inspiring. Stay tuned for exciting updates and new articles as we continue to
+        explore the fascinating world of technology together.
+      </p>
+    </div>
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.about-container {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 40px;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.about-content {
+  margin-top: 30px;
+}
+
+.about-image {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.about-description {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+</style>
